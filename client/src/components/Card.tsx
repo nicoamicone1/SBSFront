@@ -1,4 +1,4 @@
-import { Box, CardMedia, Divider, IconButton, Typography } from "@mui/material"
+import { Box, CardMedia, Divider, IconButton, Tooltip, Typography } from "@mui/material"
 import { IProduct } from "../interfaces"
 import Details from "./Details"
 import * as color from "../colores"
@@ -44,14 +44,16 @@ const Card: React.FC<Props> = ({ product }) => {
                         {product._id}
                 </Typography>
 
-                <Typography 
-                    variant="h5" 
-                    fontWeight={500}
-                    sx={{ml:{xs:0,md:1},
-                    mt:0,
-                    color:color.grisosc}}>
-                        {product.name.length>13?product.name.slice(0,13)+"...":product.name}
-                </Typography>
+                <Tooltip title={product.name} placement="top">               
+                    <Typography 
+                        variant="h5" 
+                        fontWeight={500}
+                        sx={{ml:{xs:0,md:1},
+                        mt:0,
+                        color:color.grisosc}}>
+                            {product.name.length>13?product.name.slice(0,13)+"...":product.name}
+                    </Typography>
+                </Tooltip> 
 
                 <Box sx={{
                     ml:{xs:0,md:1},

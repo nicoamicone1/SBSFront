@@ -1,7 +1,6 @@
 import { Box, Container, Grid, Typography,Pagination, Button, List, ListItem, CardMedia, IconButton } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete';
 import NavBar from '../components/NavBar'
-import EditIcon from '@mui/icons-material/Edit';
 import * as color from "../colores"
 import Loading from "../components/Loading"
 import { useContext, useState } from "react"
@@ -10,6 +9,7 @@ import swal from "sweetalert2"
 import { IProduct } from "../interfaces";
 import axios from "axios";
 import {api} from "../App"
+import EditProduct from "../components/EditProduct";
 
 
 
@@ -53,6 +53,9 @@ const WebB = () => {
             }
         })
     }
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(()=>value);
+    };
 
     return(
         <Container maxWidth={false} sx={{p:{xs:0},height:"100vh"}} >
@@ -85,23 +88,24 @@ const WebB = () => {
 
                     {products.length?
                     <List sx={{width:{xs:"100%",md:"60%"}}}>
-                    {products.map((product)=>(
+                    {products.slice((page*6)-6,page*6).map((product)=>(
                         <ListItem>
                             <Box sx={{
                                 display:"flex",
                                 flexDirection:"row",
                                 bgcolor:"white",
                                 borderRadius:3,
-                                p:2,
                                 width:"100%",
                                 alignItems:"center",
                                 justifyContent:"space-between"
                                 }}>
+                                <Box>
                                 <CardMedia
                                 component="img"
                                 image={product.image_url}
-                                sx={{height:50,width:50,objectFit:"contain"}}
+                                sx={{height:50,width:50,objectFit:"contain",p:1}}
                                 />
+                                </Box>
 
                                 <Typography noWrap variant="h5" sx={{fontWeight:300,ml:2,width:"100%"}}>{product.name}</Typography>
 
@@ -127,15 +131,16 @@ const WebB = () => {
                                     <IconButton color="error" onClick={()=>handleDelete(product)}>
                                         <DeleteIcon/>
                                     </IconButton>
-                                    <IconButton color="primary">
-                                        <EditIcon/>
-                                    </IconButton>
+                                    <EditProduct product={product}/>
                                 </Box>
                             </Box>
                         </ListItem>
                     ))}
                     </List>
                     :<Loading/>}
+                </Box>
+                <Box sx={{display:`${products.length>6?"flex":"none"}`,justifyContent:"center"}}>
+                    <Pagination count={Math.ceil(products.length/6)} page={page} onChange={handleChange} color="primary" />
                 </Box>
             </Box>
         </Container>
