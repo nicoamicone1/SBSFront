@@ -5,9 +5,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import EditIcon from '@mui/icons-material/Edit';
 import {IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function TemporaryDrawer() {
   const [state, setState] = React.useState(false);
+  const navigate=useNavigate()
 
   return (
     <div>
@@ -21,7 +23,7 @@ export default function TemporaryDrawer() {
             onClose={()=>setState(false)}           
           >
             <List sx={{width:200,mt:1}}>
-                <ListItem key="1" disablePadding>
+                <ListItem key="1" disablePadding onClick={()=>navigate("/")}>
                     <ListItemButton>
                     <ListItemIcon>
                         <HomeIcon/>
@@ -30,7 +32,7 @@ export default function TemporaryDrawer() {
                     </ListItemButton>
                 </ListItem>
 
-                <ListItem key="2" disablePadding>
+                <ListItem key="2" disablePadding onClick={()=>navigate("/WebB")}>
                     <ListItemButton>
                     <ListItemIcon>
                         <EditIcon/>

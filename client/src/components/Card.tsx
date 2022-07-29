@@ -1,6 +1,6 @@
 import { Box, CardMedia, Divider, IconButton, Typography } from "@mui/material"
 import { IProduct } from "../interfaces"
-import InfoIcon from '@mui/icons-material/Info';
+import Details from "./Details"
 import * as color from "../colores"
 
 interface Props{
@@ -22,7 +22,7 @@ const Card: React.FC<Props> = ({ product }) => {
             <CardMedia
                 component="img"
                 image={product.image_url}
-                sx={{height:200,objectFit:"contain",width:{xs:"100%",md:"50%"}}}
+                sx={{height:{xs:150,md:200},objectFit:"contain",width:{xs:"100%",md:"50%"}}}
             />
 
             <Divider sx={{marginX:2,display:{xs:"flex",md:"none"}}}/>
@@ -37,49 +37,55 @@ const Card: React.FC<Props> = ({ product }) => {
                 flexDirection:"column"}}>
 
                 <Typography 
-                    variant="h5" 
                     fontWeight={500} 
-                    sx={{ml:{xs:0,md:1},
-                    mt:1,
+                    sx={{
+                    ml:{xs:0,md:1,fontSize:10},
                     color:color.grisosc}}>
-                        {product.name}
+                        {product._id}
+                </Typography>
+
+                <Typography 
+                    variant="h5" 
+                    fontWeight={500}
+                    sx={{ml:{xs:0,md:1},
+                    mt:0,
+                    color:color.grisosc}}>
+                        {product.name.length>13?product.name.slice(0,13)+"...":product.name}
                 </Typography>
 
                 <Box sx={{
-                    bgcolor:color.azulosc,
                     ml:{xs:0,md:1},
-                    p:0.5,
-                    borderRadius:2,
-                    mt:1
+                    height:{xs:75,md:80},
+                    width:"90%",
                     }}>
-                    <Typography 
-                        variant="h6" 
-                        sx={{
-                            color:"white",
-                            background:color.goldgradiant,
-                            backgroundClip:"text",
-                            WebkitTextFillColor:"transparent"}}
-                        >$ 
-                        {product.price}
-                    </Typography>
+                    <Typography variant="body2">{product.description.length>80?product.description.slice(0,55)+"...":product.description}</Typography>
                 </Box>
 
                 <Box sx={{
                     mt:{xs:1,md:"auto"},
                     display:"flex",
-                    justifyContent:"flex-end",
-                    width:{md:"100%"}
+                    justifyContent:"space-between",
+                    width:{xs:"90%",md:"100%"}
                     }}>
-                    <IconButton 
-                        sx={{
-                            background:color.goldgradiant,
-                            borderRadius:2
+
+                    <Box sx={{
+                        bgcolor:color.azulosc,
+                        p:0.5,
+                        borderRadius:2,
                         }}>
-                        <InfoIcon sx={{color:color.azulosc}}/>
-                        <Typography variant="body2" sx={{color:color.azulosc}}>
-                            Detalles
+                        <Typography 
+                            variant="h6" 
+                            sx={{
+                                color:"white",
+                                background:color.goldgradiant,
+                                backgroundClip:"text",
+                                WebkitTextFillColor:"transparent"}}
+                            >
+                            ${product.price}
                         </Typography>
-                    </IconButton>
+                    </Box>
+
+                    <Details product={product}/>
                 </Box>
             </Box>
         </Box>

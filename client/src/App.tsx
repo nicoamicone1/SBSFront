@@ -1,60 +1,39 @@
-import React from "react"
+import React, { createContext } from "react"
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import WebA from './pages/WebA';
+import WebB from './pages/WebB';
 import { createTheme, responsiveFontSizes, ThemeProvider } from '@mui/material/styles';
-import {useState} from "react"
+import {useState,useEffect} from "react"
 import { IProduct } from './interfaces';
+import axios from "axios"
+import {IProdContext} from "./interfaces"
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
+export const api="http://localhost:3000"
+export const ProductContext=createContext({} as IProdContext)
 
 function App() {
-  const [products,setProducts]=useState<IProduct[]>([{
-    _id:"1123",
-    name:"Iphone 11",
-    price:200,
-    description:"hola",
-    image_url:"https://http2.mlstatic.com/D_NQ_NP_656548-MLA46114829749_052021-O.webp"
-  },{
-    _id:"1123",
-    name:"Iphone 11",
-    price:200,
-    description:"hola",
-    image_url:"https://http2.mlstatic.com/D_NQ_NP_656548-MLA46114829749_052021-O.webp"
-  },{
-    _id:"1123",
-    name:"Iphone 11",
-    price:200,
-    description:"hola",
-    image_url:"https://http2.mlstatic.com/D_NQ_NP_656548-MLA46114829749_052021-O.webp"
-  },{
-    _id:"1123",
-    name:"Iphone 11",
-    price:200,
-    description:"hola",
-    image_url:"https://http2.mlstatic.com/D_NQ_NP_656548-MLA46114829749_052021-O.webp"
-  },{
-    _id:"1123",
-    name:"Iphone 11",
-    price:200,
-    description:"hola",
-    image_url:"https://http2.mlstatic.com/D_NQ_NP_656548-MLA46114829749_052021-O.webp"
-  },{
-    _id:"1123",
-    name:"Iphone 11",
-    price:200,
-    description:"hola",
-    image_url:"https://http2.mlstatic.com/D_NQ_NP_656548-MLA46114829749_052021-O.webp"
-  }])
-  return (   
-    <ThemeProvider theme={theme}>
-    <Routes>
-      <Route path='/' element={<WebA products={products} />}/>
-    </Routes>
-    </ThemeProvider>
+  const [products,setProducts]=useState<IProduct[]>([])
+  
+  useEffect(()=>{
+    axios(`${api}/products`).then((res)=>setProducts(()=>res.data))
+  },[])
+
+  return (  
+    <ProductContext.Provider value={{products,setProducts}}>
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route path='/' element={<WebA/>}/>
+          <Route path='/WebB' element={<WebB/>}/>
+        </Routes>
+      </ThemeProvider>
+    </ProductContext.Provider>
   );
 }
 
 export default App;
+
+

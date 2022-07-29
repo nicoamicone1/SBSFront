@@ -1,15 +1,21 @@
-import { Box, Container, Grid, Typography } from "@mui/material"
+import { Box, Container, Grid, Typography,Pagination } from "@mui/material"
 import Card from "../components/Card"
 import NavBar from '../components/NavBar'
 import { IProduct } from "../interfaces"
 import * as color from "../colores"
+import Loading from "../components/Loading"
+import { useContext, useState } from "react"
+import { ProductContext } from "../App"
 
-interface Props{
-    products:IProduct[]
-}
 
+const WebA=() => {
+    const [page,setPage]=useState(1)
+    const {products}=useContext(ProductContext)
+    
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(()=>value);
+    };
 
-const WebA: React.FC<Props> = ({ products }) => {
     return(
         <Container maxWidth={false} sx={{p:{xs:0},height:"100vh"}} >
             <NavBar/>
@@ -33,13 +39,18 @@ const WebA: React.FC<Props> = ({ products }) => {
                     justifyContent:"center",
                     paddingY:4,
                     background:"linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(222,222,222,1) 50%, rgba(212,212,212,1) 100%)"}}>
+                    {products.length?
                     <Grid container spacing={2} width={"90%"}>
-                        {products.map((product)=>(
-                            <Grid item xs={6} sm={4}>
+                        {products.slice((page*6)-6,page*6).map((product)=>(
+                            <Grid item xs={6} lg={4}>
                                 <Card product={product}/>
                             </Grid>
                         ))}
                     </Grid>
+                    :<Loading/>}
+                </Box>
+                <Box sx={{display:`${products.length>6?"flex":"none"}`,justifyContent:"center"}}>
+                    <Pagination count={Math.ceil(products.length/6)} page={page} onChange={handleChange} color="primary" />
                 </Box>
             </Box>
         </Container>
