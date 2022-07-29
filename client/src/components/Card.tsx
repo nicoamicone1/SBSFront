@@ -22,7 +22,7 @@ const Card: React.FC<Props> = ({ product }) => {
             <CardMedia
                 component="img"
                 image={product.image_url}
-                sx={{height:{xs:150,md:200},objectFit:"contain",width:{xs:"100%",md:"50%"}}}
+                sx={{height:{xs:150,md:200},objectFit:"contain",maxWidth:{xs:"100%",md:"45%"},m:1}}
             />
 
             <Divider sx={{marginX:2,display:{xs:"flex",md:"none"}}}/>

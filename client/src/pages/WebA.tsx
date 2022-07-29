@@ -39,7 +39,9 @@ const WebA=() => {
                     display:"flex",
                     justifyContent:"center",
                     paddingY:4,
-                    background:"linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(222,222,222,1) 50%, rgba(212,212,212,1) 100%)"}}>
+                    background:"linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(222,222,222,1) 50%, rgba(212,212,212,1) 100%)",
+                    minHeight:400
+                    }}>
                     {products.length?
                     <Grid container spacing={2} width={"90%"}>
                         {products.slice((page*6)-6,page*6).map((product)=>(
