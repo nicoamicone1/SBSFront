@@ -12,7 +12,7 @@ import {IProdContext} from "./interfaces"
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
-export const api="https://apisbs.herokuapp.com/products"
+export const api="https://apisbs.herokuapp.com"
 export const ProductContext=createContext({} as IProdContext)
 
 function App() {
