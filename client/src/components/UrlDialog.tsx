@@ -16,8 +16,10 @@ interface Props{
 }
 
 const UrlDialog:React.FC<Props> =({setDummy}) =>{
+  const regex=/[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+  const [error, setError] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -27,6 +29,13 @@ const UrlDialog:React.FC<Props> =({setDummy}) =>{
     setOpen(false);
   };
 
+  const handleSave=()=>{
+    if(regex.test(value)){
+      setDummy((prev)=>({...prev,image_url:value}))
+      handleClose()
+    }
+    else setError(true)
+  }
   return (
     <div>
         <IconButton sx={{background:color.goldgradiant,ml:1}} onClick={handleClickOpen}>
@@ -42,17 +51,18 @@ const UrlDialog:React.FC<Props> =({setDummy}) =>{
                 label="Url"
                 type="url"
                 fullWidth
+                error={error}
                 variant="standard"
                 value={value}
-                onChange={(e)=>setValue(()=>e.target.value)}
+                helperText={error&&"Introducir una url valida"}
+                onChange={(e)=>{
+                  setError(false)
+                  setValue(()=>e.target.value)}}
             />
             </DialogContent>
             <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={()=>{
-                setDummy((prev)=>({...prev,image_url:value}))
-                handleClose()
-                }}>Ok</Button>
+            <Button onClick={handleSave}>Ok</Button>
             </DialogActions>
         </Dialog>
     </div>

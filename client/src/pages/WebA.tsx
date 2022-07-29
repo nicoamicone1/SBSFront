@@ -6,6 +6,7 @@ import * as color from "../colores"
 import Loading from "../components/Loading"
 import { useContext, useState } from "react"
 import { ProductContext } from "../App"
+import Footer from "../components/Footer"
 
 
 const WebA=() => {
@@ -53,6 +54,7 @@ const WebA=() => {
                     <Pagination count={Math.ceil(products.length/6)} page={page} onChange={handleChange} color="primary" />
                 </Box>
             </Box>
+            <Footer/>
         </Container>
     )
 }

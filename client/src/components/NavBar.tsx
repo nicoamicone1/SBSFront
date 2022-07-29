@@ -31,7 +31,7 @@ export default function ButtonAppBar() {
 
         <Box sx={{display:"flex",justifyContent:"center",width:"100%"}}>
           <Typography variant="h6" component="div" sx={{fontWeight:300,color:"black"}}>
-            SBS Challenge
+            Grupo SBS Challenge
           </Typography>
         </Box>
         
