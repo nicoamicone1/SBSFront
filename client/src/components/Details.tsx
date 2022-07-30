@@ -44,6 +44,7 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
           aria-label="close"
           onClick={onClose}
           sx={{
+            visibility:"hidden",
             position: 'absolute',
             right: 8,
             top: 8,
