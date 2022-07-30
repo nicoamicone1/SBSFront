@@ -10,5 +10,6 @@ export interface IProduct{
 
 export interface IProdContext{
     products:IProduct[],
-    setProducts:React.Dispatch<SetStateAction<IProduct[]>>
+    setProducts:React.Dispatch<SetStateAction<IProduct[]>>,
+    loaded:boolean
 }

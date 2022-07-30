@@ -7,11 +7,12 @@ import Loading from "../components/Loading"
 import { useContext, useState } from "react"
 import { ProductContext } from "../App"
 import Footer from "../components/Footer"
+import Empty from "../components/Empty"
 
 
 const WebA=() => {
     const [page,setPage]=useState(1)
-    const {products}=useContext(ProductContext)
+    const {products,loaded}=useContext(ProductContext)
     
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(()=>value);
@@ -42,14 +43,15 @@ const WebA=() => {
                     background:"linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(222,222,222,1) 50%, rgba(212,212,212,1) 100%)",
                     minHeight:400
                     }}>
-                    {products.length?
+                    {loaded?
+                    products.length?
                     <Grid container spacing={2} width={"90%"}>
                         {products.slice((page*6)-6,page*6).map((product)=>(
                             <Grid item xs={6} lg={4}>
                                 <Card product={product}/>
                             </Grid>
                         ))}
-                    </Grid>
+                    </Grid>:<Empty/>
                     :<Loading/>}
                 </Box>
                 <Box sx={{display:`${products.length>6?"flex":"none"}`,justifyContent:"center"}}>

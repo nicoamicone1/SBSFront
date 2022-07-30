@@ -46,6 +46,13 @@ const EditCreate:React.FC<Props> = ({product,create}) => {
 
     const handleClose = () => {
         setOpen(false);
+        create && setDummy(()=>({
+            _id:"",
+            name:"",
+            price:0,
+            description:"",
+            image_url:"https://es.letrag.com/caracteres/2b.png"
+        }))
     };
 
     const handleChange= (target:HTMLInputElement) =>{
@@ -236,13 +243,6 @@ const EditCreate:React.FC<Props> = ({product,create}) => {
                 <DialogActions>
                     <Button autoFocus onClick={()=>{
                         !create && setDummy(()=>product!)
-                        create && setDummy(()=>({
-                            _id:"",
-                            name:"",
-                            price:0,
-                            description:"",
-                            image_url:"https://es.letrag.com/caracteres/2b.png"
-                        }))
                         setPleaseComplete(false)
                         handleClose()}}>
                         Cerrar

@@ -1,23 +1,26 @@
-import { Box, Container, Grid, Typography,Pagination, Button, List, ListItem, CardMedia, IconButton, Divider } from "@mui/material"
+import { Box, Container, Grid, Typography,Pagination, Button, List, ListItem, CardMedia, IconButton, Divider, Tooltip } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete';
 import NavBar from '../components/NavBar'
 import * as color from "../colores"
 import Loading from "../components/Loading"
 import { useContext, useEffect, useState } from "react"
-import { ProductContext } from "../App"
+import { ProductContext,mil } from "../App"
 import swal from "sweetalert2"
 import { IProduct } from "../interfaces";
 import axios from "axios";
 import {api} from "../App"
 import EditCreate from "../components/EditCreate";
 import Footer from "../components/Footer";
+import SearchInput from "../components/SearchInput";
+import Empty from "../components/Empty";
 
 
 
 
 const WebB = () => {
     const [page,setPage]=useState(1)
-    const {products,setProducts}=useContext(ProductContext)
+    const {products,setProducts,loaded}=useContext(ProductContext)
+    const [dummy,setDummy]=useState<IProduct[]>(products)
 
     const handleDelete=(product:IProduct)=>{
         swal.fire({
@@ -63,14 +66,14 @@ const WebB = () => {
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={0}>
                     <Grid item xs={2}>
-                        <Box sx={{display:"flex",justifyContent:"center",border:"1px solid gray",p:0.5,height:30}}>
-                            <Typography noWrap variant="body2">{initial?"ID":product!._id}</Typography>
+                        <Box sx={{display:"flex",justifyContent:"center",border:"1px solid gray",p:0.5,height:30,ml:1,borderTop:`${!initial && 0}`}}>
+                            <Typography noWrap sx={{fontSize:{xs:"0.70rem",sm:"0.80rem"}}}>{initial?"ID":product!._id}</Typography>
                         </Box>
                     </Grid>
                     <Grid item xs={2}>
-                        <Box sx={{display:"flex",justifyContent:"center",border:"1px solid gray",p:0.5,height:30}}>
+                        <Box sx={{display:"flex",justifyContent:"center",border:"1px solid gray",p:0.5,height:30,borderTop:`${!initial && 0}`,borderLeft:0}}>
                             {initial?
-                                <Typography variant="body2">Foto</Typography>
+                                <Typography sx={{fontSize:{xs:"0.70rem",sm:"0.80rem"}}}>Foto</Typography>
                             :
                                 <CardMedia
                                 component="img"
@@ -81,28 +84,28 @@ const WebB = () => {
                         </Box>
                     </Grid>
                     <Grid item xs={2}>
-                        <Box sx={{display:"flex",justifyContent:"center",border:"1px solid gray",p:0.5,height:30}}>
-                            <Typography noWrap variant="body2">{initial?"Nombre":product!.name}</Typography>
+                        <Box sx={{display:"flex",justifyContent:"center",border:"1px solid gray",p:0.5,height:30,borderTop:`${!initial && 0}`,borderLeft:0}}> 
+                                <Typography noWrap sx={{fontSize:{xs:"0.70rem",sm:"0.80rem"}}}>{initial?"Nombre":product!.name}</Typography>
                         </Box>
                     </Grid>
                     <Grid item xs={2}>
-                        <Box sx={{display:"flex",justifyContent:"center",border:"1px solid gray",p:0.5,height:30}}>
-                            <Typography variant="body2">{initial?"Precio":`$ ${product!.price}`}</Typography>
+                        <Box sx={{display:"flex",justifyContent:"center",border:"1px solid gray",p:0.5,height:30,borderTop:`${!initial && 0}`,borderLeft:0}}>
+                            <Typography noWrap sx={{fontSize:{xs:"0.70rem",sm:"0.80rem"}}}>{initial?"Precio":`$ ${mil(product!.price)}`}</Typography>
                         </Box>
                     </Grid>
                     <Grid item xs={2}>
-                        <Box sx={{display:"flex",justifyContent:"center",border:"1px solid gray",p:0.5,height:30,alignItems:"center"}}>
+                        <Box sx={{display:"flex",justifyContent:"center",border:"1px solid gray",p:0.5,height:30,alignItems:"center",borderTop:`${!initial && 0}`,borderLeft:0}}>
                             {initial?
-                                <Typography variant="body2">Editar</Typography>
+                                <Typography sx={{fontSize:{xs:"0.70rem",sm:"0.80rem"}}}>Editar</Typography>
                             :
                                     <EditCreate product={product!}/>
                             }
                         </Box>
                     </Grid>
                     <Grid item xs={2}>
-                        <Box sx={{display:"flex",justifyContent:"center",border:"1px solid gray",p:0.5,height:30,alignItems:"center"}}>
+                        <Box sx={{display:"flex",justifyContent:"center",border:"1px solid gray",p:0.5,height:30,alignItems:"center",mr:1,borderTop:`${!initial && 0}`,borderLeft:0}}>
                             {initial?
-                                <Typography variant="body2">Eliminar</Typography>
+                                <Typography sx={{fontSize:{xs:"0.70rem",sm:"0.80rem"}}}>Eliminar</Typography>
                             :
                                 <IconButton color="error" onClick={()=>handleDelete(product!)}>
                                     <DeleteIcon/>
@@ -117,6 +120,7 @@ const WebB = () => {
 
     useEffect(()=>{
         if(products.length%10===0)page>1 && setPage((prev)=>(prev-1))
+        setDummy(()=>products)
     },[products])
     return(
         <Container maxWidth={false} sx={{p:{xs:0},height:"100vh"}} >
@@ -145,16 +149,21 @@ const WebB = () => {
                 <Box sx={{
                     display:"flex",
                     justifyContent:"center",
-                    paddingY:4,
+                    paddingY:2,
+                    flexDirection:"column",
                     background:"linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(222,222,222,1) 50%, rgba(212,212,212,1) 100%)"}}
                     >
-                    {products.length?
+                    <Box sx={{mb:2,width:"100%",display:"flex",visibility:`${loaded && !products.length?"hidden":"visible"}`,justifyContent:"center"}}>
+                        <SearchInput products={products} setDummy={setDummy}/>
+                    </Box>
+                    {loaded?
+                    products.length?
                     <Box sx={{ height: 450, width: '100%' }}>
                             {GridItem(undefined,true)}
-                            {products.slice((page*10)-10,page*10).map((product)=>(
+                            {dummy.slice((page*10)-10,page*10).map((product)=>(
                                 GridItem(product,false)
                             ))}
-                    </Box>
+                    </Box>:<Empty/>
                     :<Loading/>}
                 </Box>
                 <Box sx={{display:`${products.length>10?"flex":"none"}`,justifyContent:"center"}}>

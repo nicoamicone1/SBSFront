@@ -2,6 +2,7 @@ import { Box, CardMedia, Divider, IconButton, Tooltip, Typography } from "@mui/m
 import { IProduct } from "../interfaces"
 import Details from "./Details"
 import * as color from "../colores"
+import {mil} from "../App"
 
 interface Props{
     product:IProduct
@@ -45,13 +46,13 @@ const Card: React.FC<Props> = ({ product }) => {
                 </Typography>
 
                 <Tooltip title={product.name} placement="top">               
-                    <Typography 
-                        variant="h5" 
+                    <Typography
+                        variant="h6" 
                         fontWeight={500}
                         sx={{ml:{xs:0,md:1},
                         mt:0,
                         color:color.grisosc}}>
-                            {product.name.length>13?product.name.slice(0,13)+"...":product.name}
+                            {product.name.length>14?product.name.slice(0,14)+"...":product.name}
                     </Typography>
                 </Tooltip> 
 
@@ -83,7 +84,7 @@ const Card: React.FC<Props> = ({ product }) => {
                                 backgroundClip:"text",
                                 WebkitTextFillColor:"transparent"}}
                             >
-                            ${product.price}
+                            ${mil(product.price)}
                         </Typography>
                     </Box>
 

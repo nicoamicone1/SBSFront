@@ -26,6 +26,7 @@ const UrlDialog:React.FC<Props> =({setDummy}) =>{
   };
 
   const handleClose = () => {
+    setValue("")
     setOpen(false);
   };
 

@@ -12,6 +12,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import * as color from "../colores"
 import { IProduct } from '../interfaces';
 import { Box, CardMedia } from '@mui/material';
+import {mil} from "../App"
 
 interface Props{
     product:IProduct
@@ -109,7 +110,7 @@ const Details: React.FC<Props> = ({ product }) => {
                                 backgroundClip:"text",
                                 WebkitTextFillColor:"transparent"}}
                             >$ 
-                            {product.price}
+                            {mil(product.price)}
                         </Typography>
                     </Box>
             </Box>
