@@ -12,11 +12,12 @@ import { useState, useEffect } from "react";
 import { IProduct } from "./interfaces";
 import axios from "axios";
 import { IProdContext } from "./interfaces";
+import {getQuery} from "./querys"
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
-export const api = "https://apisbs.herokuapp.com";
+export const api = "https://graphqlsbs.herokuapp.com/graphql";
 
 export const ProductContext = createContext({} as IProdContext);
 
@@ -33,8 +34,12 @@ function App() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    axios(`${api}/products`)
-      .then((res) => setProducts(() => res.data))
+    axios
+      .post(`${api}`, {
+        "query": getQuery,
+      })
+      .then((res) => {
+        setProducts(() => res.data.data.allProducts)})
       .then(() => setLoaded(true));
   }, []);
 

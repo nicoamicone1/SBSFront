@@ -23,6 +23,7 @@ import UrlDialog from "./UrlDialog";
 import { api, ProductContext } from "../App";
 import axios from "axios";
 import AddIcon from "@mui/icons-material/Add";
+import { createQuery, editQuery, getQuery } from "../querys";
 
 interface Props {
   product?: IProduct;
@@ -71,7 +72,10 @@ const EditCreate: React.FC<Props> = ({ product, create }) => {
     } else {
       setError((prev) => ({ ...prev, [target.name]: false }));
       if (parseInt(target.value) >= 0)
-        setDummy((prev) => ({ ...prev, [target.name]: target.value }));
+        setDummy((prev) => ({
+          ...prev,
+          [target.name]: parseFloat(target.value),
+        }));
       if (parseInt(target.value) <= 0)
         setError((prev) => ({ ...prev, [target.name]: true }));
     }
@@ -104,6 +108,7 @@ const EditCreate: React.FC<Props> = ({ product, create }) => {
   };
 
   const saveChanges = () => {
+    console.log(JSON.stringify(dummy));
     if (
       dummy.name === "" ||
       dummy.price === 0 ||
@@ -115,7 +120,15 @@ const EditCreate: React.FC<Props> = ({ product, create }) => {
 
     if (create) {
       axios
-        .post(`${api}/products`, dummy)
+        .post(`${api}`, {
+          query: createQuery,
+          variables: {
+            name: dummy.name,
+            price: dummy.price,
+            description: dummy.description,
+            image_url: dummy.image_url,
+          },
+        })
         .then((res) => {
           if (res.status === 200) {
             swal.fire({
@@ -126,7 +139,13 @@ const EditCreate: React.FC<Props> = ({ product, create }) => {
           }
         })
         .then(() => {
-          axios(`${api}/products`).then((res) => setProducts(() => res.data));
+          axios
+            .post(`${api}`, {
+              query: getQuery,
+            })
+            .then((res) => {
+              setProducts(() => res.data.data.allProducts);
+            });
           handleClose();
         })
         .catch(() => {
@@ -139,7 +158,10 @@ const EditCreate: React.FC<Props> = ({ product, create }) => {
         });
     } else {
       axios
-        .put(`${api}/products/${product!._id}`, dummy)
+        .post(`${api}`, {
+          query: editQuery,
+          variables: dummy,
+        })
         .then((res) => {
           if (res.status === 200) {
             swal.fire({
@@ -150,7 +172,13 @@ const EditCreate: React.FC<Props> = ({ product, create }) => {
           }
         })
         .then(() => {
-          axios(`${api}/products`).then((res) => setProducts(() => res.data));
+          axios
+            .post(`${api}`, {
+              query: getQuery,
+            })
+            .then((res) => {
+              setProducts(() => res.data.data.allProducts);
+            });
           handleClose();
         })
         .catch(() => {

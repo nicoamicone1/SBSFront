@@ -26,6 +26,7 @@ import EditCreate from "../components/EditCreate";
 import Footer from "../components/Footer";
 import SearchInput from "../components/SearchInput";
 import Empty from "../components/Empty";
+import { deleteQuery, getQuery } from "../querys";
 
 const WebB = () => {
   const [page, setPage] = useState(1);
@@ -47,7 +48,12 @@ const WebB = () => {
       .then((res) => {
         if (res.isConfirmed) {
           axios
-            .delete(`${api}/products/${product._id}`)
+            .post(`${api}`, {
+              query: deleteQuery,
+              variables: {
+                _id:product._id
+              },
+            })
             .then((res) => {
               if (res.status === 200) {
                 swal.fire({
@@ -58,9 +64,13 @@ const WebB = () => {
               }
             })
             .then(() => {
-              axios(`${api}/products`).then((res) =>
-                setProducts(() => res.data)
-              );
+              axios
+                .post(`${api}`, {
+                  query: getQuery,
+                })
+                .then((res) => {
+                  setProducts(() => res.data.data.allProducts);
+                });
             })
             .catch(() => {
               swal.fire({
