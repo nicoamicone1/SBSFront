@@ -31,6 +31,7 @@ const Footer = () => {
       {Text("Daniel Nicolás Amicone", "2.5vh")}
       {Text("Fullstack Jr", "2vh")}
       {Text("nicoamicone1@gmail.com", "1.75vh")}
+      {Text("Fecha deploy: 29/7", "1.75vh")}
     </Box>
   );
 };
