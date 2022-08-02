@@ -30,7 +30,8 @@ export default function TemporaryDrawer() {
 
         <Drawer anchor={"left"} open={state} onClose={() => setState(false)}>
           <List sx={{ width: 200, mt: 1 }}>
-            <ListItem key="1" disablePadding onClick={() => navigate("/")}>
+            <a target="_blank" href="https://sbsweba.vercel.app/">
+            <ListItem key="1" disablePadding>
               <ListItemButton>
                 <ListItemIcon>
                   <HomeIcon />
@@ -38,13 +39,14 @@ export default function TemporaryDrawer() {
                 <ListItemText primary="Web A" />
               </ListItemButton>
             </ListItem>
+            </a>
 
-            <ListItem key="2" disablePadding onClick={() => navigate("/WebB")}>
+            <ListItem key="2" disablePadding>
               <ListItemButton>
                 <ListItemIcon>
                   <EditIcon />
                 </ListItemIcon>
-                <ListItemText primary="Web B" />
+                <ListItemText primary="Web B (Actual)" />
               </ListItemButton>
             </ListItem>
           </List>

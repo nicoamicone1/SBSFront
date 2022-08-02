@@ -30,7 +30,7 @@ import { deleteQuery, getQuery } from "../querys";
 
 const WebB = () => {
   const [page, setPage] = useState(1);
-  const { products, setProducts, loaded } = useContext(ProductContext);
+  const { products, setProducts, loaded, client } = useContext(ProductContext);
   const [dummy, setDummy] = useState<IProduct[]>(products);
 
   const handleDelete = (product: IProduct) => {
@@ -51,26 +51,18 @@ const WebB = () => {
             .post(`${api}`, {
               query: deleteQuery,
               variables: {
-                _id:product._id
+                _id: product._id,
               },
             })
             .then((res) => {
               if (res.status === 200) {
+                client.emit("getall");
                 swal.fire({
                   title: "Producto Borrado con Éxito",
                   icon: "success",
                   confirmButtonText: "Ok",
                 });
               }
-            })
-            .then(() => {
-              axios
-                .post(`${api}`, {
-                  query: getQuery,
-                })
-                .then((res) => {
-                  setProducts(() => res.data.data.allProducts);
-                });
             })
             .catch(() => {
               swal.fire({

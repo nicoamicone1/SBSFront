@@ -34,7 +34,7 @@ const EditCreate: React.FC<Props> = ({ product, create }) => {
   const [open, setOpen] = React.useState(false);
   const defaultImg = "https://es.letrag.com/caracteres/2b.png";
   const [pleaseComplete, setPleaseComplete] = React.useState(false);
-  const { setProducts } = React.useContext(ProductContext);
+  const { client } = React.useContext(ProductContext);
   const [dummy, setDummy] = React.useState<IProduct>({} as IProduct);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState({
@@ -139,13 +139,7 @@ const EditCreate: React.FC<Props> = ({ product, create }) => {
           }
         })
         .then(() => {
-          axios
-            .post(`${api}`, {
-              query: getQuery,
-            })
-            .then((res) => {
-              setProducts(() => res.data.data.allProducts);
-            });
+          client.emit("getall");
           handleClose();
         })
         .catch(() => {
@@ -172,13 +166,7 @@ const EditCreate: React.FC<Props> = ({ product, create }) => {
           }
         })
         .then(() => {
-          axios
-            .post(`${api}`, {
-              query: getQuery,
-            })
-            .then((res) => {
-              setProducts(() => res.data.data.allProducts);
-            });
+          client.emit("getall");
           handleClose();
         })
         .catch(() => {

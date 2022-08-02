@@ -1,4 +1,5 @@
 import React, { SetStateAction } from "react"
+import { Socket } from "socket.io-client"
 
 export interface IProduct{
     _id:string,
@@ -11,5 +12,6 @@ export interface IProduct{
 export interface IProdContext{
     products:IProduct[],
     setProducts:React.Dispatch<SetStateAction<IProduct[]>>,
-    loaded:boolean
+    loaded:boolean,
+    client:Socket
 }
